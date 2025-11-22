@@ -26,17 +26,47 @@ a { text-decoration: none; color: inherit; transition: 0.2s; }
 a:hover { color: var(--text-light); }
 
 /* 核心三栏布局 */
+/* 修改 source/css/style.css 中的 .container */
+
 .container {
-    max-width: 1280px;
+    width: 100%;              /* 强制宽度 */
+    max-width: 1280px;        /* 最大宽度 */
     margin: 0 auto;
     padding: 40px 20px;
+    
+    /* 使用 Grid 布局 */
     display: grid;
-    /* 左栏 240px | 中间自适应 | 右栏 260px */
-    grid-template-columns: 240px 1fr 260px; 
+    
+    /* 关键修改：定义三列宽度 */
+    /* minmax确保侧边栏不会无限缩小挤压内容 */
+    grid-template-columns: 240px minmax(0, 1fr) 260px; 
+    
     gap: 40px;
     align-items: start;
 }
 
+/* 确保图片不会撑破布局 */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 强制在小屏幕下变回单栏（防止手机上看还是三栏挤在一起） */
+@media (max-width: 900px) {
+    .container {
+        display: flex;       /* 小屏幕改用 Flex */
+        flex-direction: column;
+    }
+    .sidebar-left, .sidebar-right {
+        width: 100%;
+        text-align: left;
+        margin-bottom: 2rem;
+        border: none;
+    }
+    .sidebar-right {
+        display: block; /* 手机端也显示出来看看 */
+    }
+}
 /* === 左侧导航 (Left Sidebar) === */
 .sidebar-left {
     position: sticky;
